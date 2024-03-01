@@ -62,6 +62,7 @@ if (isset($_POST['login_btn'])) {
         $userdata = mysqli_fetch_array($login_query_run);
         $username = $userdata['name'];
         $useremail = $userdata['email'];
+        $role_as = $userdata['role_as'];
 
         // print_r($userdata);
 
@@ -70,10 +71,19 @@ if (isset($_POST['login_btn'])) {
             'email' => $useremail,
         ];
 
-        $_SESSION['message'] = "Logged In Successfully";
+        $_SESSION['role_as'] = $role_as;
 
-        header('Location: ../index.php');
-        die();
+        if ($role_as == 1) {
+            $_SESSION['message'] = "Welcome to Dashboard";
+
+            header('Location: ../admin/index.php');
+            die();
+        } else {
+            $_SESSION['message'] = "Logged In Successfully";
+
+            header('Location: ../index.php');
+            die();
+        }
     } else {
 
         $_SESSION['message'] = "Invalid credentials";
