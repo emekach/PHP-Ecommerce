@@ -2,6 +2,7 @@
 session_start();
 
 include('../config/dbcon.php');
+include('myfunctions.php');
 
 if (isset($_POST['register_btn'])) {
 
@@ -17,9 +18,7 @@ if (isset($_POST['register_btn'])) {
 
     if (mysqli_num_rows($email_check_query_run) > 0) {
 
-        $_SESSION['email_check_message'] = "Email Already exists in database";
-        header('Location: ../register.php');
-        die();
+        redirect("../register.php", "Email Already exists in database");
     } else {
         if ($password == $cpassword) {
 
@@ -28,20 +27,14 @@ if (isset($_POST['register_btn'])) {
 
             if ($insert_query_run) {
 
-                $_SESSION['message'] = "Registered Successfully";
-                header('Location: ../login.php');
-                die();
+                redirect("../login.php", "Registered Successfully");
             } else {
 
-                $_SESSION['message'] = "Something went wrong";
-                header('Location: ../register.php');
-                die();
+                redirect("../register.php", "Something went wrong");
             }
         } else {
 
-            $_SESSION['password_mismatch'] = "Passwords do not match";
-            header('Location: ../register.php');
-            die();
+            redirect("../register.php", "Passwords do not match");
         }
     }
 }
@@ -74,22 +67,14 @@ if (isset($_POST['login_btn'])) {
         $_SESSION['role_as'] = $role_as;
 
         if ($role_as == 1) {
-            $_SESSION['message'] = "Welcome to Dashboard";
 
-            header('Location: ../admin/index.php');
-            die();
+            redirect("../admin/index.php", "Welcome to Dashboard");
         } else {
-            $_SESSION['message'] = "Logged In Successfully";
 
-            header('Location: ../index.php');
-            die();
+            redirect("../index.php", "Logged In Successfully");
         }
     } else {
 
-        $_SESSION['message'] = "Invalid credentials";
-
-        header('Location: ../login.php');
-
-        die();
+        redirect("../login.php", "Invalid credentials");
     }
 }

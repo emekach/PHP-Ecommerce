@@ -56,39 +56,13 @@ include('includes/header.php');
                                 <input type="email" name="email" class="form-control" placeholder="Enter Your Email">
 
                             </div>
-                            <?php
 
-                            if (isset($_SESSION['email_check_message'])) {
-                            ?>
-                                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                                    <strong>Hey!</strong> <?= $_SESSION['email_check_message']; ?>
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                </div>
-
-                            <?php
-                                unset($_SESSION['email_check_message']);
-                            }
-
-                            ?>
                             <div class="mb-3">
                                 <label class="form-label">Password</label>
                                 <input type="password" name="password" class="form-control" placeholder="Enter Your password">
                             </div>
 
-                            <?php
 
-                            if (isset($_SESSION['password_mismatch'])) {
-                            ?>
-                                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                                    <strong>Hey!</strong> <?= $_SESSION['password_mismatch']; ?>
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                </div>
-
-                            <?php
-                                unset($_SESSION['password_mismatch']);
-                            }
-
-                            ?>
 
                             <div class="mb-3">
                                 <label class="form-label">Confirm Password</label>
