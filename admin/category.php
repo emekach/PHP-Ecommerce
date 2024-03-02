@@ -42,7 +42,7 @@ include('../middleware/adminMiddleware.php');
                                         </td>
                                         <td><?= $row['status'] == '0' ? "Visible" : "Hidden"; ?></td>
                                         <td>
-                                            <a href="#" class="btn btn-primary">Edit</a>
+                                            <a href="edit-category.php?id=<?= $row['id'] ?>" class="btn btn-primary">Edit</a>
                                         </td>
                                     </tr>
 
