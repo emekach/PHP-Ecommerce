@@ -7,16 +7,15 @@ include('../functions/myfunctions.php');
 
 if (isset($_POST['add_category_btn'])) {
 
-    // Check if any required fields are empty
-    $required_fields = ['name', 'slug', 'description', 'meta_title', 'meta_description', 'meta_keywords', 'image'];
+    // Validate input fields
+    $required_fields = ['name', 'slug', 'description', 'meta_title', 'meta_description', 'meta_keywords'];
     $errors = [];
     foreach ($required_fields as $field) {
         if (empty($_POST[$field])) {
-            $errors[] = ucfirst($field) . " is required.";
+            $errors[] = "Fields are required.";
         }
     }
 
-    // If there are any errors, redirect back to the form page with error messages
     if (!empty($errors)) {
         $error_message = implode(" ", $errors);
         redirect("add-category.php", $error_message);
@@ -28,8 +27,8 @@ if (isset($_POST['add_category_btn'])) {
     $meta_title = mysqli_real_escape_string($con, strip_tags($_POST['meta_title']));
     $meta_description = mysqli_real_escape_string($con, $_POST['meta_description']);
     $meta_keywords = mysqli_real_escape_string($con, $_POST['meta_keywords']);
-    $status =  isset($_POST['status']) ? 1 : 0;
-    $popular = isset($_POST['popular']) ? 1 : 0;
+    $status =  isset($_POST['status']) ? '1' : '0';
+    $popular = isset($_POST['popular']) ? '1' : '0';
 
     $image = $_FILES['image']['name'];
     $path = "../uploads";
@@ -62,6 +61,7 @@ if (isset($_POST['add_category_btn'])) {
             redirect("add-category.php", "Failed to move uploaded file");
         }
     } else {
+
 
         redirect("add-category.php", "Invalid FIle extension");
     }

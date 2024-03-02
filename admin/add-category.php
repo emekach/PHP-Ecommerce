@@ -30,7 +30,8 @@ include('../middleware/adminMiddleware.php');
                             </div>
                             <div class="col-md-12">
                                 <label>Description </label>
-                                <input type="text" name="description" placeholder="Enter Description" class="form-control">
+                                <textarea name="description" rows="3" class="form-control" placeholder="Enter Description"></textarea>
+
                             </div>
                             <div class="col-md-12">
                                 <label>Upload Image </label>
