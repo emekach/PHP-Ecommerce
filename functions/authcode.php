@@ -6,26 +6,31 @@ include('myfunctions.php');
 
 if (isset($_POST['register_btn'])) {
 
-    $name = mysqli_real_escape_string($con, $_POST['name']);
-    $phone = mysqli_real_escape_string($con, $_POST['phone']);
-    $email = mysqli_real_escape_string($con, $_POST['email']);
-    $password = mysqli_real_escape_string($con, $_POST['password']);
-    $cpassword = mysqli_real_escape_string($con, $_POST['cpassword']);
+    $name = mysqli_real_escape_string($con, strip_tags($_POST['name']));
+    $phone = mysqli_real_escape_string($con, strip_tags($_POST['phone']));
+    $email = mysqli_real_escape_string($con, strip_tags($_POST['email']));
+    $password = mysqli_real_escape_string($con, strip_tags($_POST['password']));
+    $cpassword = mysqli_real_escape_string($con, strip_tags($_POST['cpassword']));
 
 
-    $email_check_query = "SELECT email FROM users WHERE email= '$email'";
-    $email_check_query_run = mysqli_query($con, $email_check_query) or die(mysqli_error($con));
+    $email_check_query = "SELECT email FROM users WHERE email= ?";
+    $stmt = $con->prepare($email_check_query);
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-    if (mysqli_num_rows($email_check_query_run) > 0) {
+    if ($result->num_rows > 0) {
 
         redirect("../register.php", "Email Already exists in database");
     } else {
         if ($password == $cpassword) {
 
-            $insert_query = "INSERT INTO users (name,phone,email,password) VALUES ('$name','$phone','$email','$password')";
-            $insert_query_run = mysqli_query($con, $insert_query) or die(mysqli_error($con));
+            $insert_query = "INSERT INTO users (name,phone,email,password) VALUES (?,?,?,?)";
+            $stmt = $con->prepare($insert_query);
+            $stmt->bind_param("ssss", $name, $phone, $email, $password);
+            $stmt->execute();
 
-            if ($insert_query_run) {
+            if ($stmt->affected_rows > 0) {
 
                 redirect("../login.php", "Registered Successfully");
             } else {
@@ -36,23 +41,28 @@ if (isset($_POST['register_btn'])) {
 
             redirect("../register.php", "Passwords do not match");
         }
+
+        $con->close();
     }
 }
 
 
 if (isset($_POST['login_btn'])) {
 
-    $email = mysqli_real_escape_string($con, $_POST['email']);
-    $password = mysqli_real_escape_string($con, $_POST['password']);
+    $email = mysqli_real_escape_string($con, strip_tags($_POST['email']));
+    $password = mysqli_real_escape_string($con, strip_tags($_POST['password']));
 
-    $login_query = "SELECT * FROM users WHERE email='$email' AND password='$password'";
-    $login_query_run = mysqli_query($con, $login_query) or die(mysqli_error($con));
+    $login_query = "SELECT * FROM users WHERE email=? AND password=?";
+    $stmt = $con->prepare($login_query);
+    $stmt->bind_param("ss", $email, $password);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-    if (mysqli_num_rows($login_query_run) > 0) {
+    if ($result->num_rows > 0) {
 
         $_SESSION['auth'] = true;
 
-        $userdata = mysqli_fetch_array($login_query_run);
+        $userdata = $result->fetch_assoc();
         $username = $userdata['name'];
         $useremail = $userdata['email'];
         $role_as = $userdata['role_as'];
@@ -77,4 +87,6 @@ if (isset($_POST['login_btn'])) {
 
         redirect("../login.php", "Invalid credentials");
     }
+
+    $con->close();
 }

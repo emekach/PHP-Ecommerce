@@ -22,6 +22,13 @@ session_start();
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <!-- CSS Files -->
     <link id="pagestyle" href="assets/css/material-dashboard.min.css" rel="stylesheet" />
+    <style>
+        .form-control {
+            border: 1px solid #b3a1a1 !important;
+            padding: 8px 10px;
+        }
+    </style>
+
 </head>
 
 <body class="g-sidenav-show  bg-gray-200">
