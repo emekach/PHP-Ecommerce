@@ -83,12 +83,18 @@ if (isset($_POST['update_category_btn'])) {
     $new_image = $_FILES['image']['name'];
     $old_image = $_POST['old_image'];
 
-    $update_filename = !empty($new_image) ? $new_image : $old_image;
-
+    if (!empty($new_image)) {
+        // $update_filename = $new_image;
+        $image_ext = pathinfo($new_image, PATHINFO_EXTENSION);
+        $update_filename = time() . '.' . $image_ext;
+    } else {
+        $update_filename = $old_image;
+    }
+    
     $path = "../uploads";
-    $filename = time() . '.' . $image_ext;
+
     $tmp_name = $_FILES['image']['tmp_name'];
-    $target_path = $path . '/' . $new_image;
+    $target_path = $path . '/' . $update_filename;
 
 
     $update_query = "UPDATE categories SET name=?, slug=?, description=? ,meta_title=? ,meta_description=? ,meta_keywords=? ,status=? ,popular=? ,image=? WHERE id=?";
@@ -105,6 +111,8 @@ if (isset($_POST['update_category_btn'])) {
             }
         }
         redirect("edit-category.php?id=$category_id", "Category Updated Successfully");
+    } else {
+        redirect("edit-category.php?id=$category_id", "Something Went Wrong");
     }
 
 
