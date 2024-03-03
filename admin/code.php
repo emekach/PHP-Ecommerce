@@ -149,3 +149,27 @@ if (isset($_POST['delete_category_btn'])) {
         redirect("category.php", "Category Doesnt exist");
     }
 }
+
+if (isset($_POST['add_product_btn'])) {
+
+    $category_id = mysqli_real_escape_string($con, strip_tags($_POST['category_id']));
+    $name = mysqli_real_escape_string($con, strip_tags($_POST['name']));
+    $slug = mysqli_real_escape_string($con, strip_tags($_POST['slug']));
+    $small_description = mysqli_real_escape_string($con, $_POST['small_description']);
+    $description = mysqli_real_escape_string($con, $_POST['description']);
+    $original_price = mysqli_real_escape_string($con, strip_tags($_POST['original_price']));
+    $selling_price = mysqli_real_escape_string($con, strip_tags($_POST['selling_price']));
+    $qty = mysqli_real_escape_string($con, strip_tags($_POST['qty']));
+    $meta_title = mysqli_real_escape_string($con, strip_tags($_POST['meta_title']));
+    $meta_description = mysqli_real_escape_string($con, $_POST['meta_description']);
+    $meta_keywords = mysqli_real_escape_string($con, $_POST['meta_keywords']);
+    $status =  isset($_POST['status']) ? '1' : '0';
+    $trending = isset($_POST['trending']) ? '1' : '0';
+
+    $image = $_FILES['image']['name'];
+    $path = "../uploads";
+    $image_ext = pathinfo($image, PATHINFO_EXTENSION);
+    $filename = time() . '.' . $image_ext;
+    $tmp_name = $_FILES['image']['tmp_name'];
+    $target_path = $path . '/' . $filename;
+}
