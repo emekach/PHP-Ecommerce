@@ -90,7 +90,7 @@ if (isset($_POST['update_category_btn'])) {
     } else {
         $update_filename = $old_image;
     }
-    
+
     $path = "../uploads";
 
     $tmp_name = $_FILES['image']['tmp_name'];
@@ -117,4 +117,35 @@ if (isset($_POST['update_category_btn'])) {
 
 
     $stmt->close();
+}
+
+if (isset($_POST['delete_category_btn'])) {
+    $category_id = mysqli_real_escape_string($con, $_POST['category_id']);
+
+    $category_query = "SELECT * FROM categories WHERE id=?";
+    $stmt = $con->prepare($category_query);
+    $stmt->bind_param("i", $category_id);
+    $stmt->execute();
+    $category_result = $stmt->get_result();
+
+    if ($category_result->num_rows > 0) {
+        $row = $category_result->fetch_assoc();
+        $image = $row['image'];
+
+        $delete_query = "DELETE FROM categories WHERE id=?";
+        $stmt = $con->prepare($delete_query);
+        $stmt->bind_param("i", $category_id);
+        if ($stmt->execute()) {
+
+            if (file_exists("../uploads/" . $image)) {
+                unlink("../uploads/" . $image);
+            }
+            redirect("category.php", "Category Deleted Successfully");
+        } else {
+            redirect("category.php", "Something went wrong");
+        }
+    } else {
+
+        redirect("category.php", "Category Doesnt exist");
+    }
 }
