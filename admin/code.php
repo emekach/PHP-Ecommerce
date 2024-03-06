@@ -2,8 +2,8 @@
 
 session_start();
 
-include('../config/dbcon.php');
-include('../functions/myfunctions.php');
+require('../config/dbcon.php');
+require('../functions/myfunctions.php');
 
 if (isset($_POST['add_category_btn'])) {
 
@@ -17,7 +17,7 @@ if (isset($_POST['add_category_btn'])) {
     }
 
     if (!empty($errors)) {
-        $error_message = implode(" ", $errors);
+        $error_message = "All Fields are required";
         redirect("add-category.php", $error_message);
     }
 
@@ -152,6 +152,22 @@ if (isset($_POST['delete_category_btn'])) {
 
 if (isset($_POST['add_product_btn'])) {
 
+    $required_fields = ['category_id', 'name', 'slug', 'small_description', 'original_price', 'selling_price', 'qty', 'meta_title', 'meta_title', 'meta_description', 'meta_keywords'];
+
+    $errors = [];
+
+    foreach ($required_fields as $fields) {
+        if (empty($_POST[$fields])) {
+            $errors[] = ucfirst($fields) . " is required";
+        }
+    }
+    if (!empty($errors)) {
+        $error_message = implode("<br/>", $errors);
+        redirect("add-products.php", $error_message);
+    }
+
+
+
     $category_id = mysqli_real_escape_string($con, strip_tags($_POST['category_id']));
     $name = mysqli_real_escape_string($con, strip_tags($_POST['name']));
     $slug = mysqli_real_escape_string($con, strip_tags($_POST['slug']));
@@ -167,9 +183,30 @@ if (isset($_POST['add_product_btn'])) {
     $trending = isset($_POST['trending']) ? '1' : '0';
 
     $image = $_FILES['image']['name'];
-    $path = "../uploads";
+    $path = "../uploads/products";
     $image_ext = pathinfo($image, PATHINFO_EXTENSION);
     $filename = time() . '.' . $image_ext;
     $tmp_name = $_FILES['image']['tmp_name'];
     $target_path = $path . '/' . $filename;
+
+    $allowed_extensions = ['jpg', 'png', 'gif', 'jpeg'];
+
+    if (in_array(strtolower($image_ext), $allowed_extensions)) {
+        if (move_uploaded_file($tmp_name, $target_path)) {
+
+            $product_query = "INSERT INTO products (category_id,name,slug,small_description,description,original_price,selling_price,qty,meta_title,meta_description,meta_keywords,status,trending,image) VALUE(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            $stmt = $con->prepare($product_query);
+            $stmt->bind_param("issssiiisssiis", $category_id, $name, $slug, $small_description, $description, $original_price, $selling_price, $qty, $meta_title, $meta_description, $meta_keywords, $status, $trending, $filename);
+            if ($stmt->execute()) {
+
+                redirect("add-products.php", "Product Added Successfully");
+            } else {
+                redirect("add-products.php", "Something went wrong!...Failed to add product");
+            }
+        } else {
+            redirect("add-products.php", "Failed to upload File");
+        }
+    } else {
+        redirect("add-products.php", "Invalid File Extension");
+    }
 }

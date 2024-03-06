@@ -111,7 +111,7 @@ include('../middleware/adminMiddleware.php');
 
 
                             <div class="col-md-12">
-                                <button type="submit" name="add_product_btn" class="btn btn-primary"> Add Category</button>
+                                <button type="submit" name="add_product_btn" class="btn btn-primary"> Upload Product</button>
                             </div>
                         </div>
                     </form>

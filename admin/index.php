@@ -1,11 +1,7 @@
 <?php
-
-
-include('includes/header.php');
-
-include('../middleware/adminMiddleware.php');
+require('includes/header.php');
+require('../middleware/adminMiddleware.php');
 ?>
-
 <div class="container">
     <div class="row">
         <div class="col-md-12">

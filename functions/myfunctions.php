@@ -1,6 +1,6 @@
 <?php
 
-include('../config/dbcon.php');
+require('../config/dbcon.php');
 
 function getAll($table)
 {
@@ -39,6 +39,5 @@ function redirect($url, $message)
 {
     $_SESSION['message'] = $message;
     header('Location: ' . $url);
-
-    die();
+    exit();
 }

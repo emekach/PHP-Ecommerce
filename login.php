@@ -1,14 +1,14 @@
 <?php
 session_start();
 
-include('functions/myfunctions.php');
+require('functions/myfunctions.php');
 
 if (isset($_SESSION['auth'])) {
 
     redirect("index.php", "You are already Logged In");
 }
 
-include('includes/header.php');
+require('includes/header.php');
 ?>
 
 <div class="py-5">

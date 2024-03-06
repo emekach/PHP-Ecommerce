@@ -1,6 +1,6 @@
 <?php
 session_start();
-include('includes/header.php');
+require('includes/header.php');
 ?>
 
 <div class="py-5">

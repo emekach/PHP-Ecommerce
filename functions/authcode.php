@@ -1,8 +1,8 @@
 <?php
 session_start();
 
-include('../config/dbcon.php');
-include('myfunctions.php');
+require('../config/dbcon.php');
+require('myfunctions.php');
 
 if (isset($_POST['register_btn'])) {
 

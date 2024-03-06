@@ -1,9 +1,9 @@
 <?php
 
 
-include('includes/header.php');
+require('includes/header.php');
 
-include('../middleware/adminMiddleware.php');
+require('../middleware/adminMiddleware.php');
 ?>
 
 <div class="container">

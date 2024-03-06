@@ -8,7 +8,7 @@ if (isset($_SESSION['auth'])) {
     die();
 }
 
-include('includes/header.php');
+require('includes/header.php');
 ?>
 
 <div class="py-5">
