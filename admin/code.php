@@ -144,6 +144,7 @@ if (isset($_POST['delete_category_btn'])) {
         } else {
             redirect("category.php", "Something went wrong");
         }
+        $stmt->close();
     } else {
 
         redirect("category.php", "Category Doesnt exist");
@@ -165,8 +166,6 @@ if (isset($_POST['add_product_btn'])) {
         $error_message = implode("<br/>", $errors);
         redirect("add-products.php", $error_message);
     }
-
-
 
     $category_id = mysqli_real_escape_string($con, strip_tags($_POST['category_id']));
     $name = mysqli_real_escape_string($con, strip_tags($_POST['name']));
@@ -203,6 +202,7 @@ if (isset($_POST['add_product_btn'])) {
             } else {
                 redirect("add-products.php", "Something went wrong!...Failed to add product");
             }
+            $stmt->close();
         } else {
             redirect("add-products.php", "Failed to upload File");
         }

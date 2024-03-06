@@ -24,7 +24,7 @@ function getAll($table)
 function getById($table, $id)
 {
     global $con;
-    $query = "SELECT * FROM categories WHERE id=?";
+    $query = "SELECT * FROM $table WHERE id=?";
     $stmt = $con->prepare($query);
     $stmt->bind_param("i", $id);
     $stmt->execute();
